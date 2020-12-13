@@ -14,7 +14,11 @@
 
 1. `cd hostel_management_system`
    
-2. `pip3 install -r requirements.txt` (only for the first time) then `python3 app.py`
+2. `pip3 install -r requirements.txt` (only for the first time)
+
+3. Do `python make_table.py` (only for the first time)
+
+4. DO `python app.py`
 
 3. Add or Edit the routes and functions in the file run_model.py
 
