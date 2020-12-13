@@ -29,12 +29,17 @@ table2 ="""IF OBJECT_ID('representatives', 'U') IS NULL create table representat
 
 
 def make_table():
-    connection = pyodbc.connect(CONST.connection_string)
-    cur = connection.cursor()
-    cur.execute(table1)
-    cur.execute(table2)
-    connection.close()
-   
+     try:
+          connection = pyodbc.connect(CONST.connection_string)
+          cur = connection.cursor()
+          cur.execute(table1)
+          cur.execute(table2)
+          connection.close()
+          print('Success!')
+     except Exception as e:
+          print(e)
+
+
 choice=int(input('Create Tables? Press 1 to create.'))
 if(choice==1): 
      make_table()
