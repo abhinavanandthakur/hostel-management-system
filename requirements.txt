@@ -1,0 +1,7 @@
+Flask
+Flask-Cors
+waitress
+pyodbc
+pandas
+urllib
+sqlalchemy
