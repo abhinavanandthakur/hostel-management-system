@@ -14,7 +14,7 @@
 
 1. `cd hostel_management_system`
    
-2. `pip3 install -r requirements.txt` (only for the first time)
+2. `pip install -r requirements.txt` (only for the first time)
 
 3. Do `python make_table.py` (only for the first time)
 

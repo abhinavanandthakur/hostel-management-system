@@ -10,7 +10,7 @@ table1 = """IF OBJECT_ID('boarder_details', 'U') IS NULL CREATE TABLE boarder_de
      dob DATE; """
 
 # For rooms
-table2 ="""IF OBJECT_ID('rooms', 'U') IS NULL create table rooms ( id BIGINT PRIMARY KEY IDENTITY(1,1),\
+table2 ="""IF OBJECT_ID('rooms', 'U') IS NULL create table rooms ( id BIGINT PRIMARY KEY ,\
      followee_id BIGINT NOT NULL,\
      follower_id BIGINT NOT NULL,\
      date_stamp DATE NOT NULL DEFAULT CONVERT(date, getdate()),\

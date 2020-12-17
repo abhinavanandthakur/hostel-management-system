@@ -18,7 +18,8 @@ def get_boarder():
         df = pd.read_sql(query, engine)   #TO FETCH
 
         if len(df) < 1:    #Empty boarder Data (No boarders)
-            ({status:'Success',data:{}})
+            connection.close()
+            return ({status:'Success',data:{}})
         else:
             for index, rows in df.iterrows():
                 obj = {
@@ -40,19 +41,14 @@ def get_boarder():
     try:  
         engine, connection = make_conn()
         boarder_id = str(request.json["boarder_id"])
-        query = "select boarder_id, boardername, first_name, last_name from boarder_details where boarder_id = "+boarder_id+" ;"
+        query = "select * from boarder_details where boarder_id = "+boarder_id+" ;"
         df = pd.read_sql(query, engine)   #TO FETCH
-
+        boarder_meta={}
         if len(df) < 1:    #Empty boarder Data (No boarder)
             ({status:'Success',data:{}})
         else:
             for index, rows in df.iterrows():
-                boarder_meta = {
-                    "boarder_id": rows.boarder_id,
-                    "boardername": rows.boardername,
-                    "first_name": rows.first_name,
-                    "last_name": rows.last_name
-                }
+                boarder_meta = rows
             connection.close()
             return ({status:'Success',data:boarder_meta})
 
