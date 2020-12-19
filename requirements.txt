@@ -3,5 +3,5 @@ Flask-Cors
 waitress
 pyodbc
 pandas
-urllib
 sqlalchemy
+numpy==1.19.3

@@ -11,7 +11,7 @@ app.register_blueprint(run_model.bp, url_prefix='/api')
 
 @app.route("/")
 def check_status():
-    return jsonify({status:'Success',data:[]})
+    return jsonify({'status':'Success','data':[]})
 
 if __name__ == "__main__":  #Local
     app.run(host="localhost", port="3435", debug=True, use_reloader=True,threaded=True)
