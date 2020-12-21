@@ -1,0 +1,7 @@
+Flask
+Flask-Cors
+waitress
+pyodbc
+pandas
+sqlalchemy
+numpy==1.19.3
