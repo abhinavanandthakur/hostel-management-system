@@ -20,7 +20,7 @@
 
 4. DO `python app.py`
 
-3. Add or Edit the routes and functions in the file run_model.py
+5. Add or Edit the routes and functions in the file run_model.py
 
 ### Testing the API
 
@@ -39,35 +39,44 @@ Example input for ADD BOARDERS (POST):
 INPUT:
 ```json
     {
-    "name":"Subhasish Goswami",
-    "image":"https://asdasdasd/asdasd.png",
-    "email":"asdasdasd@gmail.com",
-    "phone":"100123123",
-    "gtoken":"123981239127317237"
+    "rollNo":1,
+    "first_name":"Adittya",
+    "last_name":"Dey",
+    "phoneNumber":"9999999999",
+    "department":"CSE",
+    "programme":"B.Tech",
+    "email":"ichbinadittyadey@gmail.com",
+    "dateOfBirth":"",
+    "address":"Guwahati",
+    "roomNo":1
     }
 ```
 
-Example input for UPDATE boarderS :
-* Set the URL TO `http://localhost:9999/run_model/update_boarders` to Update Single Record 
+Example input for UPDATE boarder :
+* Set the URL TO `http://localhost:9999/run_model/update_boarder` to Update Single Record 
 
 INPUT:
 ```json
     {   
-        "api_key":"Enter API key for successfull operation",
-        "email":"asdasdasd@gmail.com",
-        "name": "Upam Sarmah"
+    "rollNo":1,
+    "first_name":"Adittya",
+    "last_name":"Dey",
+    "phoneNumber":"9999999999",
+    "department":"CSE",
+    "programme":"B.Tech",
+    "email":"ichbinadittyadey@gmail.com",
+    "dateOfBirth":"",
+    "address":"Guwahati",
+    "roomNo":1
     }
 ```
-Example input for DELETE boarderS :
-* Set the URL TO `http://localhost:9999/run_model/delete_boarders` to Delete boarder Record
+Example input for DELETE boarder :
+* Set the URL TO `http://localhost:9999/run_model/delete_boarder` to Delete boarder Record
 
 INPUT:
 ```json
     {
-
-        "api_key":"Enter API key for successfull operation",
-        "email":"asdasdasd@gmail.com"
-    
+        "rollNo":1
     }
 ```
 
