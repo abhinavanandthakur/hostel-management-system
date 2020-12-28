@@ -24,43 +24,23 @@ def get_all_boarders():
         else:
             for index, rows in df.iterrows():
                 obj = {
-                    "rollNo": rows.rollNo,
-                    "first_name": rows.first_name,
-                    "last_name": rows.last_name,
-                    "phoneNumber": rows.phoneNumber,
-                    "department": rows.department,
-                    "programme": rows.programme,
-                    "email": rows.email,
-                    "dateOfBirth": rows.dateOfBirth,
-                    "address": rows.address,
-                    "roomNo": rows.roomNo
+                    "rollNo": int(rows.rollNo),
+                    "first_name": str(rows.first_name),
+                    "last_name": str(rows.last_name),
+                    "phoneNumber": str(rows.phoneNumber),
+                    "department": str(rows.department),
+                    "programme": str(rows.programme),
+                    "email": str(rows.email),
+                    "dateOfBirth": str(rows.dateOfBirth),
+                    "address": str(rows.address),
+                    "roomNo": int(rows.roomNo)
                 }
                 boarder_meta.append(obj)
             connection.close()
             return ({status:'Success',data:boarder_meta})
 
     except Exception as e:
-        return ({status:'Failed',data:e})
-
-
-@bp.route("/get_boarder", methods=["POST"])
-def get_boarder():
-    try:  
-        engine, connection = make_conn()
-        rollNo = str(request.json["rollNo"])
-        query = "select * from boarder_details where rollNo = "+rollNo+" ;"
-        df = pd.read_sql(query, engine)   #TO FETCH
-        boarder_meta={}
-        if len(df) < 1:    #Empty boarder Data (No boarder)
-            ({status:'Success',data:{}})
-        else:
-            for index, rows in df.iterrows():
-                boarder_meta = rows
-            connection.close()
-            return ({status:'Success',data:boarder_meta})
-
-    except Exception as e:
-        return ({status:'Failed',data:e})
+        return ({status:'Failed',data:str(e)})
 
 
 @bp.route("/add_boarders", methods=["POST"])
@@ -80,30 +60,31 @@ def add_profile():
             roomNo=str(request.json["roomNo"])
 
             query="insert into boarder_details(rollNo,first_name,last_name,phoneNumber,department,programme,email,dateOfBirth,address,roomNo) values("+rollNo+","+first_name+","+last_name+","+phoneNumber+","+department+","+programme+","+email+","+dateOfBirth+","+address+","+roomNo+");"
+            print("Inserted",query)
             connection.execute(query)   #TO INSERT
-
+            
             query="select (rollNo,first_name,last_name,phoneNumber,department,programme,email,dateOfBirth,address,roomNo) from boarder_details where rollNo = "+rollNo+" ;"
             df = pd.read_sql(query, engine)    #TO FETCH
 
             boarder_meta = {}
             for index, rows in df.iterrows():
                     boarder_meta = {
-                        "rollNo": rows.rollNo,
-                        "first_name": rows.first_name,
-                        "last_name": rows.last_name,
-                        "phoneNumber": rows.phoneNumber,
-                        "department": rows.department,
-                        "programme": rows.programme,
-                        "email": rows.email,
-                        "dateOfBirth": rows.dateOfBirth,
-                        "address": rows.address,
-                        "roomNo": rows.roomNo
+                        "rollNo": int(rows.rollNo),
+                        "first_name": str(rows.first_name),
+                        "last_name": str(rows.last_name),
+                        "phoneNumber": str(rows.phoneNumber),
+                        "department": str(rows.department),
+                        "programme": str(rows.programme),
+                        "email": str(rows.email),
+                        "dateOfBirth": str(rows.dateOfBirth),
+                        "address": str(rows.address),
+                        "roomNo": int(rows.roomNo)
                     }
             connection.close()
             return({status:'Success',data:boarder_meta})
     
     except Exception as e:
-        return ({status:'Failed',data:e})
+        return ({status:'Failed',data:str(e)})
 
 
 @bp.route("/update_boarder", methods=["POST"])
@@ -130,23 +111,23 @@ def boarder_update():
         boarder_meta = {}
         for index, rows in df.iterrows():
             boarder_meta = {
-                    "rollNo": rows.rollNo,
-                    "first_name": rows.first_name,
-                    "last_name": rows.last_name,
-                    "phoneNumber": rows.phoneNumber,
-                    "department": rows.department,
-                    "programme": rows.programme,
-                    "email": rows.email,
-                    "dateOfBirth": rows.dateOfBirth,
-                    "address": rows.address,
-                    "roomNo": rows.roomNo
+                    "rollNo": int(rows.rollNo),
+                    "first_name": str(rows.first_name),
+                    "last_name": str(rows.last_name),
+                    "phoneNumber": str(rows.phoneNumber),
+                    "department": str(rows.department),
+                    "programme": str(rows.programme),
+                    "email": str(rows.email),
+                    "dateOfBirth": str(rows.dateOfBirth),
+                    "address": str(rows.address),
+                    "roomNo": int(rows.roomNo)
             }
 
         connection.close()
         return({status:'Success',data:boarder_meta})
 
     except Exception as e:
-        return ({status:'Failed',data:e})
+        return ({status:'Failed',data:str(e)})
 
 
 @bp.route("/delete_boarder", methods=["POST"])
@@ -161,7 +142,7 @@ def boarder_delete():
         return({status:'Success',data:{}})
 
     except Exception as e:
-        return ({status:'Failed',data:e})
+        return ({status:'Failed',data:str(e)})
 
 
 #----------------rooms ROUTES----------------------#
@@ -181,35 +162,15 @@ def get_all_rooms():
         else:
             for index, rows in df.iterrows():
                 obj = {
-                    "roomNo": rows.roomNo,
-                    "floor": rows.floor
+                    "roomNo": int(rows.roomNo),
+                    "floor": int(rows.floor)
                 }
                 room_meta.append(obj)
             connection.close()
             return ({status:'Success',data:room_meta})
 
     except Exception as e:
-        return ({status:'Failed',data:e})
-
-
-@bp.route("/get_room", methods=["POST"])
-def get_room():
-    try:  
-        engine, connection = make_conn()
-        roomNo = str(request.json["roomNo"])
-        query = "select * from rooms where roomNo = "+roomNo+" ;"
-        df = pd.read_sql(query, engine)   #TO FETCH
-        room_meta={}
-        if len(df) < 1:    #Empty room Data (No room)
-            ({status:'Success',data:{}})
-        else:
-            for index, rows in df.iterrows():
-                room_meta = rows
-            connection.close()
-            return ({status:'Success',data:room_meta})
-
-    except Exception as e:
-        return ({status:'Failed',data:e})
+        return ({status:'Failed',data:str(e)})
 
 
 @bp.route("/add_rooms", methods=["POST"])
@@ -221,22 +182,23 @@ def add_room():
             floor=str(request.json["floor"])
 
             query="insert into rooms(roomNo,floor) values("+roomNo+","+floor+");"
+            print(query)
             connection.execute(query)   #TO INSERT
 
-            query="select (roomNo,floor) from rooms where roomNo = "+roomNo+" ;"
+            query="select roomNo,floor from rooms where roomNo = "+roomNo+" ;"
             df = pd.read_sql(query, engine)    #TO FETCH
 
             room_meta = {}
             for index, rows in df.iterrows():
                     room_meta = {
-                        "roomNo": rows.roomNo,
-                        "floor": rows.floor
+                        "roomNo": int(rows.roomNo),
+                        "floor": int(rows.floor)
                     }
             connection.close()
             return({status:'Success',data:room_meta})
     
     except Exception as e:
-        return ({status:'Failed',data:e})
+        return ({status:'Failed',data:str(e)})
 
 
 @bp.route("/update_room", methods=["POST"])
@@ -250,7 +212,7 @@ def room_update():
         updateString = "UPDATE rooms SET roomNo = "+roomNo+", floor = "+floor+" ;"
         connection.execute(updateString)  #TO UPDATE
 
-        query = "SELECT (roomNo,floor) from rooms where roomNo = "+roomNo+" ;"
+        query = "SELECT roomNo,floor from rooms where roomNo = "+roomNo+" ;"
         df = pd.read_sql(query, engine)
 
         room_meta = {}
@@ -264,7 +226,7 @@ def room_update():
         return({status:'Success',data:room_meta})
 
     except Exception as e:
-        return ({status:'Failed',data:e})
+        return ({status:'Failed',data:str(e)})
 
 
 @bp.route("/delete_room", methods=["POST"])
@@ -279,7 +241,7 @@ def room_delete():
         return({status:'Success',data:{}})
 
     except Exception as e:
-        return ({status:'Failed',data:e})
+        return ({status:'Failed',data:str(e)})
 
 
 #----------------representatives ROUTES----------------------#
@@ -299,36 +261,15 @@ def get_all_representatives():
         else:
             for index, rows in df.iterrows():
                 obj = {
-                    "role": rows.role,
-                    "rollNo": rows.rollNo
+                    "role": str(rows.role),
+                    "rollNo": int(rows.rollNo)
                 }
                 representatives_meta.append(obj)
             connection.close()
             return ({status:'Success',data:representatives_meta})
 
     except Exception as e:
-        return ({status:'Failed',data:e})
-
-
-@bp.route("/get_representative", methods=["POST"])
-def get_representative():
-    try:  
-        engine, connection = make_conn()
-        role = str(request.json["role"])
-        query = "select * from representatives where role = "+role+" ;"
-        df = pd.read_sql(query, engine)   #TO FETCH
-        representatives_meta={}
-        if len(df) < 1:    
-            ({status:'Success',data:{}})
-        else:
-            for index, rows in df.iterrows():
-                representatives_meta = rows
-            connection.close()
-            return ({status:'Success',data:representatives_meta})
-
-    except Exception as e:
-        return ({status:'Failed',data:e})
-
+        return ({status:'Failed',data:str(e)})
 
 @bp.route("/add_representatives", methods=["POST"])
 def add_representatives():
@@ -341,20 +282,20 @@ def add_representatives():
             query="insert into representatives(role,rollNo) values("+role+","+rollNo+");"
             connection.execute(query)   #TO INSERT
 
-            query="select (role,rollNo) from representatives where role = "+role+" ;"
+            query="select role,rollNo from representatives where role = "+role+" ;"
             df = pd.read_sql(query, engine)    #TO FETCH
 
             representatives_meta = {}
             for index, rows in df.iterrows():
                     representatives_meta = {
-                        "role": rows.role,
-                        "rollNo": rows.rollNo
+                        "role": str(rows.role),
+                        "rollNo": int(rows.rollNo)
                     }
             connection.close()
             return({status:'Success',data:representatives_meta})
     
     except Exception as e:
-        return ({status:'Failed',data:e})
+        return ({status:'Failed',data:str(e)})
 
 
 @bp.route("/update_representative", methods=["POST"])
@@ -374,15 +315,15 @@ def representatives_update():
         representatives_meta = {}
         for index, rows in df.iterrows():
             representatives_meta = {
-                "role": rows.role,
-                "rollNo": rows.rollNo
+                "role": str(rows.role),
+                "rollNo": int(rows.rollNo)
             }
 
         connection.close()
         return({status:'Success',data:representatives_meta})
 
     except Exception as e:
-        return ({status:'Failed',data:e})
+        return ({status:'Failed',data:str(e)})
 
 
 @bp.route("/delete_representative", methods=["POST"])
@@ -396,5 +337,5 @@ def representative_delete():
         return({status:'Success',data:{}})
 
     except Exception as e:
-        return ({status:'Failed',data:e})
+        return ({status:'Failed',data:str(e)})
 
