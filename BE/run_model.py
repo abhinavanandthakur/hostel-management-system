@@ -214,10 +214,9 @@ def room_update():
         engine, connection = make_conn()
         roomNo=str(request.json["roomNo"])
         floor=str(request.json["floor"])
-
-        updateString = "UPDATE rooms SET roomNo = "+roomNo+", floor = "+floor+" ;"
+        updateString = "UPDATE rooms SET floor = "+floor+" WHERE roomNo = "+roomNo+";"
+        print(updateString)
         connection.execute(updateString)  #TO UPDATE
-
         query = "SELECT roomNo,floor from rooms where roomNo = "+roomNo+" ;"
         df = pd.read_sql(query, engine)
 
@@ -313,12 +312,12 @@ def representatives_update():
         engine, connection = make_conn()
         rollNo=str(request.json["rollNo"])
         role=str(request.json["role"])
-        updateString = """\
-                        UPDATE rooms SET rollNo = ? WHERE role = ? ;
+        updateString  = """\
+                        UPDATE representatives SET rollNo = ? WHERE role= ? ;
                     """
-        connection.execute(query,(rollNo,role))   #TO UPDATE
-
-        query ="select (role,rollNo) from representatives where role = "+rollNo+" ;"
+        print(updateString)
+        connection.execute(updateString,(rollNo,role))   #TO UPDATE
+        query ="select role,rollNo from representatives where role = "+role+" ;"
         df = pd.read_sql(query, engine)
 
         representatives_meta = {}
