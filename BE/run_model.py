@@ -59,11 +59,14 @@ def add_profile():
             address=str(request.json["address"])
             roomNo=str(request.json["roomNo"])
 
-            query="insert into boarder_details(rollNo,first_name,last_name,phoneNumber,department,programme,email,dateOfBirth,address,roomNo) values("+rollNo+","+first_name+","+last_name+","+phoneNumber+","+department+","+programme+","+email+","+dateOfBirth+","+address+","+roomNo+");"
-            print("Inserted",query)
-            connection.execute(query)   #TO INSERT
             
-            query="select (rollNo,first_name,last_name,phoneNumber,department,programme,email,dateOfBirth,address,roomNo) from boarder_details where rollNo = "+rollNo+" ;"
+            query = """\
+                        insert into boarder_details(rollNo,first_name,last_name,phoneNumber,department,programme,email,dateOfBirth,address,roomNo) values( ? , ?, ?, ?, ?, ?, ?, ?, ?, ? );
+                    """
+            print("Inserted",query)
+            connection.execute(query,(rollNo,first_name, last_name, phoneNumber, department, programme, email, dateOfBirth, address, roomNo))   #TO INSERT
+            
+            query="select rollNo,first_name,last_name,phoneNumber,department,programme,email,dateOfBirth,address,roomNo from boarder_details where rollNo = "+rollNo+" ;"
             df = pd.read_sql(query, engine)    #TO FETCH
 
             boarder_meta = {}
@@ -102,8 +105,11 @@ def boarder_update():
         dateOfBirth=str(request.json["dateOfBirth"])
         address=str(request.json["address"])
         roomNo=str(request.json["roomNo"])
-        updateString = "UPDATE boarder_details SET first_name = "+first_name+", last_name = "+last_name+", phoneNumber="+phoneNumber+",department="+department+",programme="+programme+",email="+email+",dateOfBirth="+dateOfBirth+",address="+address+",roomNo="+roomNo+" WHERE rollNo = "+rollNo+" ;"
-        connection.execute(updateString)  #TO UPDATE
+        #updateString = "UPDATE boarder_details SET first_name = "+first_name+", last_name = "+last_name+", phoneNumber="+phoneNumber+",department="+department+",programme="+programme+",email="+email+",dateOfBirth="+dateOfBirth+",address="+address+",roomNo="+roomNo+" WHERE rollNo = "+rollNo+" ;"
+        updateString  = """\
+                        UPDATE boarder_details SET first_name=?,last_name=?,phoneNumber=?,department=?,programme=?,email=?,dateOfBirth=?,address=?,roomNo=? WHERE rollNo=? ;
+                    """
+        connection.execute(updateString,(first_name, last_name, phoneNumber, department, programme, email, dateOfBirth, address, roomNo, rollNo))  #TO UPDATE
 
         query = "SELECT rollNo,first_name,last_name,phoneNumber,department,programme,email,dateOfBirth,address,roomNo from boarder_details where rollNo = "+rollNo+" ;"
         df = pd.read_sql(query, engine)
@@ -218,8 +224,8 @@ def room_update():
         room_meta = {}
         for index, rows in df.iterrows():
             room_meta = {
-                "roomNo": rows.roomNo,
-                "floor": rows.floor
+                "roomNo": int(rows.roomNo),
+                "floor": int(rows.floor)
             }
 
         connection.close()
@@ -279,8 +285,10 @@ def add_representatives():
             rollNo=str(request.json["rollNo"])
             role=str(request.json["role"])
 
-            query="insert into representatives(role,rollNo) values("+role+","+rollNo+");"
-            connection.execute(query)   #TO INSERT
+            query = """\
+                        insert into representatives(role,rollNo) values( ? , ? );
+                    """
+            connection.execute(query,(role,rollNo))   #TO INSERT
 
             query="select role,rollNo from representatives where role = "+role+" ;"
             df = pd.read_sql(query, engine)    #TO FETCH
@@ -305,11 +313,12 @@ def representatives_update():
         engine, connection = make_conn()
         rollNo=str(request.json["rollNo"])
         role=str(request.json["role"])
+        updateString = """\
+                        UPDATE rooms SET rollNo = ? WHERE role = ? ;
+                    """
+        connection.execute(query,(rollNo,role))   #TO UPDATE
 
-        updateString = "UPDATE rooms SET rollNo = "+rollNo+", role = "+role+" ;"
-        connection.execute(updateString)  #TO UPDATE
-
-        query ="select (role,rollNo) from representatives where role = "+role+" ;"
+        query ="select (role,rollNo) from representatives where role = "+rollNo+" ;"
         df = pd.read_sql(query, engine)
 
         representatives_meta = {}
@@ -331,8 +340,8 @@ def representative_delete():
     try:
         engine, connection = make_conn()
         role=str(request.json["role"])
-        query = "DELETE FROM representatives WHERE role = "+role+";"
-        connection.execute(query)
+        query = "DELETE FROM representatives WHERE role = ? ;"
+        connection.execute(query,(role))
         connection.close()
         return({status:'Success',data:{}})
 
